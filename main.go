@@ -4,6 +4,7 @@ package main
 
 import (
 	"code.google.com/p/go.crypto/ssh"
+	"fmt"
 	"flag"
 	"log"
 	"net/http"
@@ -43,8 +44,7 @@ func main() {
 		log.Fatalf("unable to register tcp forward: %v", err)
 	}
 	defer l.Close()
-
-	s := new(http.Server)
-	log.Printf("http server done: %v", s.Serve(l))
-	
+	http.Serve(l, http.HandlerFunc(func(resp http.ResponseWriter, req *http.Request) {
+		fmt.Fprintf(resp, "Hello world!\n")	
+	}))
 }
